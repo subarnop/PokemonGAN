@@ -162,18 +162,8 @@ class DCGAN():
         # Rescale images 0 - 1
         gen_imgs = 0.5 * gen_imgs + 0.5
         #ims("images/pokemon_%d.png" % epoch,utils.merge(gen_imgs,[3,3]))
+        ims('images/pokemon_%d.png'%epoch, utils.merge(gen_imgs,[3,3]))
 
-        fig, axs = plt.subplots(r, c)
-        fig.suptitle("DCGAN: Generated Pokemons", fontsize=12)
-        cnt = 0
-        for i in range(r):
-            for j in range(c):
-                axs[i,j].imshow(gen_imgs[cnt, :,:,0])
-                axs[i,j].axis('off')
-                cnt += 1
-        #scipy.misc.imsave(path, fig)
-        fig.savefig("images/pokemon_%d.png" % epoch)
-        plt.close()
 
 
 if __name__ == '__main__':
@@ -181,4 +171,4 @@ if __name__ == '__main__':
         os.makedirs('images/')
 
     dcgan = DCGAN()
-    dcgan.train(epochs=4000, batch_size=32, save_interval=2)
+    dcgan.train(epochs=4000, batch_size=32, save_interval=50)
