@@ -1,14 +1,17 @@
+#Pokemon generator in grayscale
+#TODO: Finer adjustment to increase detling quality
+
 from __future__ import print_function
 
 from keras.layers import Input, Dense, Reshape, Flatten, Dropout
 from keras.layers import BatchNormalization, Activation, ZeroPadding2D
 from keras.layers.advanced_activations import LeakyReLU
-from keras.layers.convolutional import UpSampling3D, Conv2D, Conv3D, UpSampling2D
+from keras.layers.convolutional import UpSampling2D, Conv2D
 from keras.models import Sequential, Model
 from keras.optimizers import Adam
-from scipy.misc import imsave as ims
+
 import matplotlib.pyplot as plt
-from PIL import Image
+
 import sys
 import os
 import numpy as np
@@ -19,7 +22,7 @@ class DCGAN():
     def __init__(self):
         self.img_rows = 100
         self.img_cols = 100
-        self.channels = 3
+        self.channels = 1
 
         optimizer = Adam(0.0002, 0.5)
 
@@ -65,7 +68,7 @@ class DCGAN():
         model.add(Conv2D(64, kernel_size=3, padding="same"))
         model.add(Activation("relu"))
         model.add(BatchNormalization(momentum=0.8))
-        model.add(Conv2D(3, kernel_size=3, padding="same"))
+        model.add(Conv2D(1, kernel_size=3, padding="same"))
         model.add(Activation("tanh"))
 
         model.summary()
@@ -110,14 +113,13 @@ class DCGAN():
     def train(self, epochs, batch_size=128, save_interval=50):
 
         # Load the dataset
-        X_train = utils.load_data()
+        X_train = utils.load_data_gray()
 
         # Rescale -1 to 1
         X_train = (X_train.astype(np.float32) - 127.5) / 127.5
-        #X_train = np.expand_dims(X_train, axis=3)
+        X_train = np.expand_dims(X_train, axis=3)
 
         half_batch = int(batch_size / 2)
-
 
         for epoch in range(epochs):
 
@@ -161,24 +163,22 @@ class DCGAN():
 
         # Rescale images 0 - 1
         gen_imgs = 0.5 * gen_imgs + 0.5
-        #ims("images/pokemon_%d.png" % epoch,utils.merge(gen_imgs,[3,3]))
 
         fig, axs = plt.subplots(r, c)
-        fig.suptitle("DCGAN: Generated Pokemons", fontsize=12)
+        #fig.suptitle("DCGAN: Generated digits", fontsize=12)
         cnt = 0
         for i in range(r):
             for j in range(c):
-                axs[i,j].imshow(gen_imgs[cnt, :,:,0])
+                axs[i,j].imshow(gen_imgs[cnt, :,:,0], cmap='gray')
                 axs[i,j].axis('off')
                 cnt += 1
-        #scipy.misc.imsave(path, fig)
-        fig.savefig("images/pokemon_%d.png" % epoch)
+        fig.savefig("images_gray/pokemon_%d.png" % epoch)
         plt.close()
 
 
 if __name__ == '__main__':
-    if not os.path.exists('images/'):
-        os.makedirs('images/')
+    if not os.path.exists('images_gray/'):
+        os.makedirs('images_gray/')
 
     dcgan = DCGAN()
-    dcgan.train(epochs=4000, batch_size=32, save_interval=2)
+    dcgan.train(epochs=4000, batch_size=32, save_interval=50)
