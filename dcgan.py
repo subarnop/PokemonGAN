@@ -17,8 +17,8 @@ import utils
 
 class DCGAN():
     def __init__(self):
-        self.img_rows = 28
-        self.img_cols = 28
+        self.img_rows = 100
+        self.img_cols = 100
         self.channels = 1
 
         optimizer = Adam(0.0002, 0.5)
@@ -54,8 +54,8 @@ class DCGAN():
 
         model = Sequential()
 
-        model.add(Dense(128 * 7 * 7, activation="relu", input_shape=noise_shape))
-        model.add(Reshape((7, 7, 128)))
+        model.add(Dense(128 * 25 * 25, activation="relu", input_shape=noise_shape))
+        model.add(Reshape((25, 25, 128)))
         model.add(BatchNormalization(momentum=0.8))
         model.add(UpSampling2D())
         model.add(Conv2D(128, kernel_size=3, padding="same"))
@@ -154,7 +154,7 @@ class DCGAN():
                 self.save_imgs(epoch)
 
     def save_imgs(self, epoch):
-        r, c = 5, 5
+        r, c = 3, 3
         noise = np.random.normal(0, 1, (r * c, 100))
         gen_imgs = self.generator.predict(noise)
 
