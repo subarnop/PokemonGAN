@@ -1,8 +1,21 @@
 # PokemonGAN
 
-We are developing a DCGAN to produce newer variants of Pokemon from random noise inputs.
+We are making a DCGAN to generate newer variants of Pokemon from random noise inputs.
 
-We have been able to make Pokemons in grayscale shown below:
+The DCGAN used in this project is based on the paper by [Chintala et al.](https://arxiv.org/pdf/1511.06434.pdf)
+
+Generative Adverserial Networks are used for generative modeling, was first proposed by [Goodfellow](https://arxiv.org/abs/1406.2661)
+This Convolutional GAN mainly consists of two different networks, the genarator and the discriminator. The Generator tries to generates images from random noise and fools the discriminator in the process.
+
+The Generator model consist of a block of layers that consist of Batchnormalization, upsampling followed by a convolution with relu activation. Thre are 4 such blocks used only the forth block conatins tanh function as the activation of the convolution layer.
+The Discriminator model is a simple deep convolution network trying to distinguish between true or fake pokemon images.
+The combined model is compiled adam optimizer(learning rate=0.0002), with binary cross entroy loss.
+
+The training process for the images in RGB is shown below:
+![alt text](https://github.com/Subarno/PokemonGAN/blob/master/output_rgb.gif "RGB Pokemon From Noise Output")
+
+A simpler network for Gneration of images in greyscale is also done.
+The training process for the images in grayscale is shown below:
 ![alt text](https://github.com/Subarno/PokemonGAN/blob/master/output.gif "Pokemon From Noise Output")
 
 This project is still under progress.
