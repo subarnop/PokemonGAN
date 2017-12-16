@@ -11,12 +11,12 @@ The Generator model consist of a block of layers that consist of Batchnormalizat
 The Discriminator model is a simple deep convolution network trying to distinguish between true or fake pokemon images.
 The combined model is compiled adam optimizer(learning rate=0.0002), with binary cross entropy loss.
 The training process for the images in RGB is shown below:
-
-![alt text](https://github.com/Subarno/PokemonGAN/blob/master/output_rgb.gif "RGB Pokemon From Noise Output")
-
+<p align="center">
+  <img width="300" height="300" src="https://github.com/Subarno/PokemonGAN/blob/master/output_rgb.gif">
+</p>
 A simpler network for Gneration of images in grayscale is also done.
 The training process for the images in grayscale is shown below:
-
-![alt text](https://github.com/Subarno/PokemonGAN/blob/master/output.gif "Pokemon From Noise Output")
-
+<p align="center">
+  <img width="400" height="300" src="https://github.com/Subarno/PokemonGAN/blob/master/output.gif">
+</p>
 This project is still under progress.
