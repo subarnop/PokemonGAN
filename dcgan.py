@@ -119,7 +119,7 @@ class DCGAN():
         half_batch = int(batch_size / 2)
 
 
-        for epoch in range(epochs):
+        for epoch in range(epochs+1):
 
             # ---------------------
             #  Train Discriminator

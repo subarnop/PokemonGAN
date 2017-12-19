@@ -1,6 +1,6 @@
 # PokemonGAN
 
-We are making a DCGAN to generate newer variants of [Pokemon](https://drive.google.com/open?id=1qWuOlnPc4bYRTbKoQDZZWXjo9UcEcPWD) from random noise inputs.
+We are making a DCGAN to generate newer variants of [Pokemon](https://drive.google.com/open?id=1qWuOlnPc4bYRTbKoQDZZWXjo9UcEcPWD)(link to training dataset) from random noise inputs.
 
 The DCGAN used in this project is based on the paper by [Chintala et al.](https://arxiv.org/pdf/1511.06434.pdf)
 
