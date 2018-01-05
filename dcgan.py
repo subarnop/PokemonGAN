@@ -11,9 +11,12 @@ import matplotlib.pyplot as plt
 from PIL import Image
 import sys
 import os
+import glob
 import numpy as np
-
+from keras.models import model_from_json
 import utils
+
+save_interval = 200
 
 class DCGAN():
     def __init__(self):
@@ -107,7 +110,7 @@ class DCGAN():
 
         return Model(img, validity)
 
-    def train(self, epochs, batch_size=128, save_interval=50):
+    def train(self, epochs, batch_size=128):
 
         # Load the dataset
         X_train = utils.load_data()
@@ -150,9 +153,15 @@ class DCGAN():
             # Plot the progress
             print ("%d [D loss: %f, acc.: %.2f%%] [G loss: %f]" % (epoch, d_loss[0], 100*d_loss[1], g_loss))
 
+            if epoch == 0:
+                model_json = self.generator.to_json()
+                with open("weights/generator.json", "w") as json_file:
+                    json_file.write(model_json)
             # If at save interval => save generated image samples
             if epoch % save_interval == 0:
                 self.save_imgs(epoch)
+                gen_name = "weights/gen_" + str(epoch) + ".h5"
+                self.generator.save_weights(gen_name)
 
     def save_imgs(self, epoch):
         r, c = 3, 3
@@ -164,11 +173,37 @@ class DCGAN():
         #ims("images/pokemon_%d.png" % epoch,utils.merge(gen_imgs,[3,3]))
         ims('images/pokemon_%d.png'%epoch, utils.merge(gen_imgs,[3,3]))
 
+    def test_imgs(self):
+        r, c = 3, 3
+        noise = np.random.normal(0, 1, (r * c, 100))
+
+        # load json and create model
+        json_file = open('weights/generator.json', 'r')
+        loaded_model_json = json_file.read()
+        json_file.close()
+        loaded_model = model_from_json(loaded_model_json)
+        weightlist = glob.glob('weights/*.h5')
+        cnt = 0
+        for weight in weightlist:
+            # load weights into new model
+            loaded_model.load_weights(weight)
+            gen_imgs = self.generator.predict(noise)
+            # Rescale images 0 - 1
+            gen_imgs = 0.5 * gen_imgs + 0.5
+            ims('images/test_pokemon_%d.png'%cnt, utils.merge(gen_imgs,[3,3]))
+            cnt = cnt+save_interval
+
+
 
 
 if __name__ == '__main__':
     if not os.path.exists('images/'):
         os.makedirs('images/')
 
+    if not os.path.exists('weights/'):
+        os.makedirs('weights/')
+
     dcgan = DCGAN()
-    dcgan.train(epochs=4000, batch_size=32, save_interval=50)
+    dcgan.train(epochs=2000, batch_size=32)
+
+    dcgan.test_imgs()

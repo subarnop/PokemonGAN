@@ -8,6 +8,7 @@ images/
 images_gray/
 Pokemon/
 Pokemon_Grey/
+weights/
 
 # C extensions
 *.so
