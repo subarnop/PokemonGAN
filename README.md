@@ -10,9 +10,9 @@ This Convolutional GAN mainly consists of two different networks, the genarator 
 The Generator model consist of a block of layers that consist of Batchnormalization, upsampling followed by a convolution with relu activation. There are 4 such blocks used only the forth block contains tanh function as the activation of the convolution layer.
 The Discriminator model is a simple deep convolution network trying to distinguish between true or fake pokemon images.
 The combined model is compiled adam optimizer(learning rate=0.0002), with binary cross entropy loss.
-The training process for the images in RGB is shown below:
+The entire training process for 100000 iterations is shown in this video:
 <p align="center">
-  <img width="300" height="300" src="https://github.com/Subarno/PokemonGAN/blob/master/output_rgb.gif">
+  [![Training Process](https://img.youtube.com/vi/IBPWMNsy2Z0/0.jpg)](https://www.youtube.com/watch?v=IBPWMNsy2Z0)
 </p>
 A simpler network for Gneration of images in grayscale is also done.
 The training process for the images in grayscale is shown below:
